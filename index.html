@@ -34,24 +34,9 @@ footer{text-align:center;color:var(--muted);padding:50px 0 25px;font-size:12px}
 
 <section id="results" class="section"><div class="sectionHead"><div><h2>Ergebnisse</h2><div class="muted">Übersicht aller abgeschlossenen Matches</div></div></div><div class="panel" style="padding:10px;overflow:auto"><table class="table"><thead><tr><th>Match</th><th>Runde</th><th>Ergebnis</th><th>Sieger</th></tr></thead><tbody id="resultsBody"></tbody></table></div></section>
 
-<section id="admin" class="section"><div class="sectionHead"><div><h2>Admin</h2><div class="muted">Turnier verwalten – Änderungen werden lokal gespeichert.</div></div></div>
-<div class="admin">
-<div class="panel form"><h3>Teams & Teilnehmer verwalten</h3>
-<div class="notice">Du kannst alle 32 Startplätze selbst benennen und die zwei Spieler jedes Teams eintragen. Außerdem kannst du die Paarungen im Achtelfinale frei zusammenstellen.</div>
-<div id="teamAdmin"></div>
-<div class="formActions"><button class="btn primary" onclick="saveTeams()">Teams speichern</button></div>
-</div>
-<div class="panel form"><h3>Achtelfinale frei zuweisen</h3>
-<div class="notice">Wähle für jedes Match die beiden Teams. Die folgenden Runden werden automatisch aus den tatsächlichen Gewinnern aufgebaut – ausgeschiedene Teams tauchen nicht wieder auf.</div>
-<div id="pairingAdmin"></div>
-<div class="formActions"><button class="btn primary" onclick="savePairings()">Paarungen speichern</button></div>
-</div>
 
-<div class="panel form"><h3>Turnier-Einstellungen</h3><label>Turniername</label><input id="cfgTitle"><label>Untertitel</label><input id="cfgSubtitle"><div class="formActions"><button class="btn primary" onclick="saveConfig()">Speichern</button><button class="btn" onclick="resetTournament()">Turnier zurücksetzen</button></div><div class="notice">Die Website funktioniert komplett ohne Server. Daten werden im Browser per localStorage gespeichert.</div></div>
-<div class="panel form"><h3>Serien-Ergebnis eintragen</h3><div class="notice">Achtelfinale: Best of 3 · Viertelfinale: Best of 5 · Halbfinale & Finale: Best of 7</div><label>Match</label><select id="matchSelect"></select><div class="formGrid"><div><label>Team A Score</label><input id="scoreA" type="number" min="0" max="7" value="2"></div><div><label>Team B Score</label><input id="scoreB" type="number" min="0" max="7" value="1"></div></div><label>Status</label><select id="matchStatus"><option value="finished">Beendet</option><option value="live">LIVE</option><option value="pending">Ausstehend</option></select><div class="formActions"><button class="btn primary" onclick="saveMatch()">Ergebnis speichern</button></div></div>
-</div></section>
-</main><footer>Rocket League Tournament · Made for your event</footer>
-<script>
+
+
 const rounds=[{name:'Achtelfinale',count:16,bestOf:3},{name:'Viertelfinale',count:8,bestOf:5},{name:'Halbfinale',count:4,bestOf:7},{name:'Finale',count:2,bestOf:7}];
 let data=JSON.parse(localStorage.getItem('rlTournament')||'null');
 function makeData(){let teams=Array.from({length:32},(_,i)=>({id:i+1,name:`Team ${String(i+1).padStart(2,'0')}`,p1:`Spieler ${i*2+1}`,p2:`Spieler ${i*2+2}`}));let matches=[];let id=1;
