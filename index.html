@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Rocket League Tournament</title>
+<style>
+:root{--bg:#070a12;--panel:#0e1422;--panel2:#151d2e;--line:#263149;--text:#f5f7fb;--muted:#8f9bb2;--accent:#19b5fe;--accent2:#7c5cff;--green:#37d67a;--red:#ff5577}
+*{box-sizing:border-box} body{margin:0;font-family:Inter,system-ui,Arial,sans-serif;background:radial-gradient(circle at 50% -10%,#162846 0,#070a12 45%);color:var(--text)}
+button,input{font:inherit} button{cursor:pointer}.container{max-width:1400px;margin:auto;padding:24px}
+header{position:sticky;top:0;z-index:20;background:rgba(7,10,18,.88);backdrop-filter:blur(18px);border-bottom:1px solid var(--line)}
+.nav{max-width:1400px;margin:auto;padding:16px 24px;display:flex;align-items:center;justify-content:space-between;gap:20px}.brand{font-weight:900;letter-spacing:.5px}.brand span{color:var(--accent)}nav{display:flex;gap:8px;flex-wrap:wrap}nav button,.btn{border:1px solid var(--line);background:var(--panel);color:var(--text);padding:10px 14px;border-radius:10px}nav button.active,.btn.primary{background:linear-gradient(135deg,var(--accent),var(--accent2));border-color:transparent}
+.hero{padding:56px 0 30px;display:grid;grid-template-columns:1.4fr .6fr;gap:24px;align-items:stretch}.heroCard,.panel{background:linear-gradient(180deg,rgba(21,29,46,.92),rgba(12,17,29,.92));border:1px solid var(--line);border-radius:20px;box-shadow:0 20px 70px rgba(0,0,0,.22)}.heroCard{padding:36px}.eyebrow{color:var(--accent);font-weight:800;text-transform:uppercase;font-size:12px;letter-spacing:1.5px}.hero h1{font-size:clamp(38px,6vw,76px);line-height:.95;margin:12px 0}.hero p{color:var(--muted);font-size:18px}.statGrid{display:grid;grid-template-columns:repeat(2,1fr);gap:12px}.stat{padding:22px;border:1px solid var(--line);border-radius:16px;background:rgba(7,10,18,.45)}.stat b{font-size:30px;display:block}.stat span{color:var(--muted);font-size:13px}
+.section{display:none}.section.active{display:block}.sectionHead{display:flex;justify-content:space-between;align-items:end;gap:20px;margin:25px 0}.sectionHead h2{margin:0;font-size:30px}.muted{color:var(--muted)}
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(230px,1fr));gap:14px}.team{padding:18px}.teamTop{display:flex;align-items:center;gap:14px}.logo{width:54px;height:54px;border-radius:15px;display:grid;place-items:center;background:linear-gradient(135deg,#1a2842,#101828);font-weight:900;color:var(--accent);border:1px solid var(--line)}.team h3{margin:0}.players{color:var(--muted);font-size:13px;margin-top:12px;line-height:1.7}.badge{display:inline-block;padding:5px 8px;border-radius:999px;background:rgba(55,214,122,.12);color:var(--green);font-size:11px;font-weight:800}.badge.out{background:rgba(255,85,119,.1);color:var(--red)}
+.bracketWrap{overflow:auto;padding-bottom:15px}.bracket{display:flex;gap:18px;min-width:1150px}.round{width:260px}.round h3{font-size:13px;color:var(--muted);text-transform:uppercase;letter-spacing:1px;margin:0 0 12px}.matches{display:flex;flex-direction:column;gap:14px}.match{padding:12px;border:1px solid var(--line);border-radius:13px;background:var(--panel)}.match.live{border-color:var(--accent);box-shadow:0 0 0 1px rgba(25,181,254,.15)}.matchTitle{display:flex;justify-content:space-between;color:var(--muted);font-size:11px;margin-bottom:8px}.row{display:flex;justify-content:space-between;gap:8px;padding:7px 8px;border-radius:8px}.row.winner{background:rgba(55,214,122,.08);color:var(--green)}.score{font-weight:900}.status{font-size:10px;font-weight:800;color:var(--accent)}
+.admin{display:grid;grid-template-columns:1fr 1fr;gap:18px}.form{padding:20px}.formGrid{display:grid;grid-template-columns:1fr 1fr;gap:10px}.form input,.form select{width:100%;padding:11px;border-radius:9px;border:1px solid var(--line);background:#080d18;color:var(--text)}.form label{font-size:12px;color:var(--muted);display:block;margin:10px 0 5px}.formActions{display:flex;gap:8px;margin-top:14px;flex-wrap:wrap}.adminRow{display:grid;grid-template-columns:44px 1.2fr 1fr 1fr;gap:7px;align-items:center;margin:7px 0}.adminRow input,.adminRow select{min-width:0}.adminRow small{color:var(--muted)}@media(max-width:700px){.adminRow{grid-template-columns:32px 1fr;}.adminRow input,.adminRow select{grid-column:2}}.notice{padding:12px;border-radius:10px;background:rgba(25,181,254,.08);color:#b8eaff;font-size:13px;margin-top:12px}
+.table{width:100%;border-collapse:collapse}.table th,.table td{padding:12px;border-bottom:1px solid var(--line);text-align:left}.table th{color:var(--muted);font-size:12px}
+footer{text-align:center;color:var(--muted);padding:50px 0 25px;font-size:12px}
+@media(max-width:850px){.hero{grid-template-columns:1fr}.admin{grid-template-columns:1fr}.container{padding:15px}.nav{padding:12px 15px}.heroCard{padding:25px}.statGrid{grid-template-columns:1fr 1fr}}
+</style>
+</head>
+<body>
+<header><div class="nav"><div class="brand">RL <span>TOURNAMENT</span></div><nav id="nav"></nav></div></header>
+<main class="container">
+<section class="hero">
+<div class="heroCard"><div class="eyebrow">Rocket League · 2v2</div><h1 id="title">Rocket League Championship</h1><p id="subtitle">32 Teams · 64 Spieler · Single Elimination</p><button class="btn primary" onclick="show('bracket')">Zum Turnierplan</button></div>
+<div class="heroCard"><div class="statGrid"><div class="stat"><b id="teamCount">32</b><span>Teams</span></div><div class="stat"><b id="playerCount">64</b><span>Spieler</span></div><div class="stat"><b id="played">0</b><span>Spiele beendet</span></div><div class="stat"><b id="remaining">31</b><span>Spiele übrig</span></div></div></div>
+</section>
+
+<section id="teams" class="section"><div class="sectionHead"><div><h2>Teilnehmer</h2><div class="muted">Alle Teams und Spieler</div></div><input id="teamSearch" placeholder="Team suchen…" oninput="renderTeams()" style="padding:10px;border-radius:10px;border:1px solid var(--line);background:var(--panel);color:white"></div><div class="grid" id="teamGrid"></div></section>
+
+<section id="bracket" class="section"><div class="sectionHead"><div><h2>Turnierplan</h2><div class="muted">Ergebnisse werden automatisch weitergereicht.</div></div></div><div class="panel bracketWrap"><div class="bracket" id="bracketGrid"></div></div></section>
+
+<section id="results" class="section"><div class="sectionHead"><div><h2>Ergebnisse</h2><div class="muted">Übersicht aller abgeschlossenen Matches</div></div></div><div class="panel" style="padding:10px;overflow:auto"><table class="table"><thead><tr><th>Match</th><th>Runde</th><th>Ergebnis</th><th>Sieger</th></tr></thead><tbody id="resultsBody"></tbody></table></div></section>
+
+<section id="admin" class="section"><div class="sectionHead"><div><h2>Admin</h2><div class="muted">Turnier verwalten – Änderungen werden lokal gespeichert.</div></div></div>
+<div class="admin">
+<div class="panel form"><h3>Teams & Teilnehmer verwalten</h3>
+<div class="notice">Du kannst alle 32 Startplätze selbst benennen und die zwei Spieler jedes Teams eintragen. Außerdem kannst du die Paarungen im Achtelfinale frei zusammenstellen.</div>
+<div id="teamAdmin"></div>
+<div class="formActions"><button class="btn primary" onclick="saveTeams()">Teams speichern</button></div>
+</div>
+<div class="panel form"><h3>Achtelfinale frei zuweisen</h3>
+<div class="notice">Wähle für jedes Match die beiden Teams. Die folgenden Runden werden automatisch aus den tatsächlichen Gewinnern aufgebaut – ausgeschiedene Teams tauchen nicht wieder auf.</div>
+<div id="pairingAdmin"></div>
+<div class="formActions"><button class="btn primary" onclick="savePairings()">Paarungen speichern</button></div>
+</div>
+
+<div class="panel form"><h3>Turnier-Einstellungen</h3><label>Turniername</label><input id="cfgTitle"><label>Untertitel</label><input id="cfgSubtitle"><div class="formActions"><button class="btn primary" onclick="saveConfig()">Speichern</button><button class="btn" onclick="resetTournament()">Turnier zurücksetzen</button></div><div class="notice">Die Website funktioniert komplett ohne Server. Daten werden im Browser per localStorage gespeichert.</div></div>
+<div class="panel form"><h3>Serien-Ergebnis eintragen</h3><div class="notice">Achtelfinale: Best of 3 · Viertelfinale: Best of 5 · Halbfinale & Finale: Best of 7</div><label>Match</label><select id="matchSelect"></select><div class="formGrid"><div><label>Team A Score</label><input id="scoreA" type="number" min="0" max="7" value="2"></div><div><label>Team B Score</label><input id="scoreB" type="number" min="0" max="7" value="1"></div></div><label>Status</label><select id="matchStatus"><option value="finished">Beendet</option><option value="live">LIVE</option><option value="pending">Ausstehend</option></select><div class="formActions"><button class="btn primary" onclick="saveMatch()">Ergebnis speichern</button></div></div>
+</div></section>
+</main><footer>Rocket League Tournament · Made for your event</footer>
+<script>
+const rounds=[{name:'Achtelfinale',count:16,bestOf:3},{name:'Viertelfinale',count:8,bestOf:5},{name:'Halbfinale',count:4,bestOf:7},{name:'Finale',count:2,bestOf:7}];
+let data=JSON.parse(localStorage.getItem('rlTournament')||'null');
+function makeData(){let teams=Array.from({length:32},(_,i)=>({id:i+1,name:`Team ${String(i+1).padStart(2,'0')}`,p1:`Spieler ${i*2+1}`,p2:`Spieler ${i*2+2}`}));let matches=[];let id=1;
+for(let i=0;i<16;i++)matches.push({id:id++,round:0,a:teams[i*2].id,b:teams[i*2+1].id,sa:null,sb:null,status:'pending'});
+for(let r=1;r<4;r++)for(let i=0;i<rounds[r].count/2;i++)matches.push({id:id++,round:r,a:null,b:null,sa:null,sb:null,status:'pending'});
+return {title:'Rocket League Championship',subtitle:'32 Teams · 64 Spieler · Single Elimination',teams,matches}}
+if(!data)data=makeData();
+function save(){localStorage.setItem('rlTournament',JSON.stringify(data))}
+function show(id){document.querySelectorAll('.section').forEach(x=>x.classList.remove('active'));document.getElementById(id).classList.add('active');document.querySelectorAll('nav button').forEach(x=>x.classList.toggle('active',x.dataset.page===id));if(id==='teams')renderTeams();if(id==='bracket')renderBracket();if(id==='results')renderResults();if(id==='admin')renderAdmin()}
+function team(id){return data.teams.find(t=>t.id===id)}
+function renderTeams(){let q=(document.getElementById('teamSearch')?.value||'').toLowerCase();document.getElementById('teamGrid').innerHTML=data.teams.filter(t=>(t.name+t.p1+t.p2).toLowerCase().includes(q)).map(t=>`<div class="panel team"><div class="teamTop"><div class="logo">${t.name.replace('Team ','T')}</div><div><h3>${t.name}</h3><span class="badge ${isOut(t.id)?'out':''}">${isOut(t.id)?'Ausgeschieden':'Im Turnier'}</span></div></div><div class="players">👤 ${t.p1}<br>👤 ${t.p2}</div></div>`).join('')}
+function isOut(id){
+return data.matches.some(m=>m.status==='finished' && (m.a===id||m.b===id) && winner(m)!==id);
+}
+function winsNeeded(m){return Math.ceil(rounds[m.round].bestOf/2)}
+function winner(m){
+if(m.sa===null||m.sb===null)return null;
+const need=winsNeeded(m);
+if(m.sa<need&&m.sb<need)return null;
+if(m.sa===m.sb)return null;
+return m.sa>m.sb?m.a:m.b
+}
+function propagate(){
+for(let r=1;r<4;r++){
+let prev=data.matches.filter(m=>m.round===r-1), cur=data.matches.filter(m=>m.round===r);
+cur.forEach((m,i)=>{
+let p1=prev[i*2],p2=prev[i*2+1];
+m.a=winner(p1); m.b=winner(p2);
+if(!m.a||!m.b){m.sa=null;m.sb=null;if(m.status!=='live')m.status='pending';}
+});
+}
+}
+function renderBracket(){propagate();let html='';rounds.forEach((r,ri)=>{let ms=data.matches.filter(m=>m.round===ri);html+=`<div class="round"><h3>${r.name}</h3><div class="matches">${ms.map(m=>{let a=team(m.a)?.name||'TBD',b=team(m.b)?.name||'TBD',w=winner(m);return `<div class="match ${m.status==='live'?'live':''}"><div class="matchTitle"><span>Match #${m.id} · BO${rounds[m.round].bestOf}</span><span class="status">${m.status==='live'?'● LIVE':m.status==='finished'?'BEENDET':'AUSSTEHEND'}</span></div><div class="row ${w===m.a?'winner':''}"><span>${a}</span><span class="score">${m.sa??'–'}</span></div><div class="row ${w===m.b?'winner':''}"><span>${b}</span><span class="score">${m.sb??'–'}</span></div></div>`}).join('')}</div></div>`});document.getElementById('bracketGrid').innerHTML=html;save();updateStats()}
+function renderResults(){document.getElementById('resultsBody').innerHTML=data.matches.filter(m=>m.status==='finished'&&winner(m)).map(m=>`<tr><td>#${m.id}</td><td>${rounds[m.round].name} · BO${rounds[m.round].bestOf}</td><td>${team(m.a)?.name} ${m.sa}:${m.sb} ${team(m.b)?.name}</td><td><b>${team(winner(m))?.name}</b></td></tr>`).join('')||'<tr><td colspan="4" class="muted">Noch keine Ergebnisse.</td></tr>'}
+
+function renderTeamAdmin(){
+const el=document.getElementById('teamAdmin');
+if(!el)return;
+el.innerHTML=data.teams.map((t,i)=>`<div class="adminRow">
+<small>#${i+1}</small>
+<input id="tn${t.id}" value="${esc(t.name)}" placeholder="Teamname">
+<input id="tp1${t.id}" value="${esc(t.p1)}" placeholder="Spieler 1">
+<input id="tp2${t.id}" value="${esc(t.p2)}" placeholder="Spieler 2">
+</div>`).join('');
+}
+function renderPairingAdmin(){
+const el=document.getElementById('pairingAdmin'); if(!el)return;
+const first=data.matches.filter(m=>m.round===0);
+el.innerHTML=first.map((m,i)=>{
+const opts=data.teams.map(t=>`<option value="${t.id}" ${m.a===t.id?'selected':''}>${esc(t.name)}</option>`).join('');
+const optsB=data.teams.map(t=>`<option value="${t.id}" ${m.b===t.id?'selected':''}>${esc(t.name)}</option>`).join('');
+return `<div class="adminRow"><small>Match ${i+1}</small><select id="pa${m.id}">${opts}</select><select id="pb${m.id}">${optsB}</select></div>`;
+}).join('');
+}
+function esc(v){return String(v??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]))}
+function saveTeams(){
+data.teams.forEach(t=>{
+t.name=document.getElementById('tn'+t.id).value.trim()||('Team '+String(t.id).padStart(2,'0'));
+t.p1=document.getElementById('tp1'+t.id).value.trim()||'Spieler 1';
+t.p2=document.getElementById('tp2'+t.id).value.trim()||'Spieler 2';
+});
+save(); renderPairingAdmin(); renderTeams(); renderBracket(); alert('Teams gespeichert.');
+}
+function savePairings(){
+const first=data.matches.filter(m=>m.round===0);
+const used=new Set();
+for(const m of first){
+const a=+document.getElementById('pa'+m.id).value, b=+document.getElementById('pb'+m.id).value;
+if(a===b){alert('Ein Team kann nicht gegen sich selbst spielen.');return}
+if(used.has(a)||used.has(b)){alert('Jedes Team darf im Achtelfinale nur einmal vorkommen.');return}
+used.add(a);used.add(b); m.a=a;m.b=b;
+m.sa=null;m.sb=null;m.status='pending';
+}
+data.matches.filter(m=>m.round>0).forEach(m=>{m.a=null;m.b=null;m.sa=null;m.sb=null;m.status='pending'});
+propagate();save();renderBracket();renderAdmin();alert('Achtelfinal-Paarungen gespeichert.');
+}
+function renderAdmin(){
+document.getElementById('cfgTitle').value=data.title;
+document.getElementById('cfgSubtitle').value=data.subtitle;
+document.getElementById('matchSelect').innerHTML=data.matches.map(m=>`<option value="${m.id}">#${m.id} · ${rounds[m.round].name} · BO${rounds[m.round].bestOf} · ${team(m.a)?.name||'TBD'} vs ${team(m.b)?.name||'TBD'}</option>`).join('');
+renderTeamAdmin();renderPairingAdmin();
+}
+function saveConfig(){data.title=document.getElementById('cfgTitle').value||data.title;data.subtitle=document.getElementById('cfgSubtitle').value||data.subtitle;save();document.getElementById('title').textContent=data.title;document.getElementById('subtitle').textContent=data.subtitle;alert('Gespeichert.')}
+function saveMatch(){
+let m=data.matches.find(x=>x.id==document.getElementById('matchSelect').value);
+const max=rounds[m.round].bestOf, need=Math.ceil(max/2);
+m.sa=+document.getElementById('scoreA').value;
+m.sb=+document.getElementById('scoreB').value;
+m.status=document.getElementById('matchStatus').value;
+if(m.sa<0||m.sb<0||m.sa>max||m.sb>max){alert(`Ungültiger Spielstand. Maximal ${max} Siege pro Team.`);return}
+if(m.status==='finished' && (m.sa===m.sb || Math.max(m.sa,m.sb)<need)){alert(`Für ${rounds[m.round].name} (${max} Games) muss ein Team ${need} Games gewinnen.`);return}
+if(m.status==='finished' && Math.min(m.sa,m.sb)>=need){alert('Beide Teams können die Serie nicht gleichzeitig gewinnen.');return}
+save();renderAdmin();renderBracket();renderResults();alert('Serie gespeichert.')
+}
+function resetTournament(){if(confirm('Wirklich das komplette Turnier zurücksetzen?')){data=makeData();save();location.reload()}}
+function updateStats(){let played=data.matches.filter(m=>m.status==='finished'&&winner(m)).length;document.getElementById('played').textContent=played;document.getElementById('remaining').textContent=31-played}
+document.getElementById('nav').innerHTML=[['teams','Teilnehmer'],['bracket','Turnierplan'],['results','Ergebnisse'],['admin','Admin']].map(x=>`<button data-page="${x[0]}" onclick="show('${x[0]}')">${x[1]}</button>`).join('');
+document.getElementById('title').textContent=data.title;document.getElementById('subtitle').textContent=data.subtitle;document.getElementById('teamCount').textContent=data.teams.length;document.getElementById('playerCount').textContent=data.teams.length*2;show('bracket');
+</script>
+</body></html>
