@@ -14,10 +14,10 @@ header{position:sticky;top:0;z-index:20;background:rgba(7,10,18,.88);backdrop-fi
 .section{display:none}.section.active{display:block}.sectionHead{display:flex;justify-content:space-between;align-items:end;gap:20px;margin:25px 0}.sectionHead h2{margin:0;font-size:30px}.muted{color:var(--muted)}
 .grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(230px,1fr));gap:14px}.team{padding:18px}.teamTop{display:flex;align-items:center;gap:14px}.logo{width:54px;height:54px;border-radius:15px;display:grid;place-items:center;background:linear-gradient(135deg,#1a2842,#101828);font-weight:900;color:var(--accent);border:1px solid var(--line)}.team h3{margin:0}.players{color:var(--muted);font-size:13px;margin-top:12px;line-height:1.7}.badge{display:inline-block;padding:5px 8px;border-radius:999px;background:rgba(55,214,122,.12);color:var(--green);font-size:11px;font-weight:800}.badge.out{background:rgba(255,85,119,.1);color:var(--red)}
 .bracketWrap{overflow:auto;padding-bottom:15px}.bracket{display:flex;gap:18px;min-width:1150px}.round{width:260px}.round h3{font-size:13px;color:var(--muted);text-transform:uppercase;letter-spacing:1px;margin:0 0 12px}.matches{display:flex;flex-direction:column;gap:14px}.match{padding:12px;border:1px solid var(--line);border-radius:13px;background:var(--panel)}.match.live{border-color:var(--accent);box-shadow:0 0 0 1px rgba(25,181,254,.15)}.matchTitle{display:flex;justify-content:space-between;color:var(--muted);font-size:11px;margin-bottom:8px}.row{display:flex;justify-content:space-between;gap:8px;padding:7px 8px;border-radius:8px}.row.winner{background:rgba(55,214,122,.08);color:var(--green)}.score{font-weight:900}.status{font-size:10px;font-weight:800;color:var(--accent)}
-.{display:grid;grid-template-columns:1fr 1fr;gap:18px}.form{padding:20px}.formGrid{display:grid;grid-template-columns:1fr 1fr;gap:10px}.form input,.form select{width:100%;padding:11px;border-radius:9px;border:1px solid var(--line);background:#080d18;color:var(--text)}.form label{font-size:12px;color:var(--muted);display:block;margin:10px 0 5px}.formActions{display:flex;gap:8px;margin-top:14px;flex-wrap:wrap}.{display:grid;grid-template-columns:44px 1.2fr 1fr 1fr;gap:7px;align-items:center;margin:7px 0}.a input,.select{min-width:0}.small{color:var(--muted)}@media(max-width:700px){.{grid-template-columns:32px 1fr;}.input,.select{grid-column:2}}.notice{padding:12px;border-radius:10px;background:rgba(25,181,254,.08);color:#b8eaff;font-size:13px;margin-top:12px}
+.admin{display:grid;grid-template-columns:1fr 1fr;gap:18px}.form{padding:20px}.formGrid{display:grid;grid-template-columns:1fr 1fr;gap:10px}.form input,.form select{width:100%;padding:11px;border-radius:9px;border:1px solid var(--line);background:#080d18;color:var(--text)}.form label{font-size:12px;color:var(--muted);display:block;margin:10px 0 5px}.formActions{display:flex;gap:8px;margin-top:14px;flex-wrap:wrap}.adminRow{display:grid;grid-template-columns:44px 1.2fr 1fr 1fr;gap:7px;align-items:center;margin:7px 0}.adminRow input,.adminRow select{min-width:0}.adminRow small{color:var(--muted)}@media(max-width:700px){.adminRow{grid-template-columns:32px 1fr;}.adminRow input,.adminRow select{grid-column:2}}.notice{padding:12px;border-radius:10px;background:rgba(25,181,254,.08);color:#b8eaff;font-size:13px;margin-top:12px}
 .table{width:100%;border-collapse:collapse}.table th,.table td{padding:12px;border-bottom:1px solid var(--line);text-align:left}.table th{color:var(--muted);font-size:12px}
 footer{text-align:center;color:var(--muted);padding:50px 0 25px;font-size:12px}
-@media(max-width:850px){.hero{grid-template-columns:1fr}.{grid-template-columns:1fr}.container{padding:15px}.nav{padding:12px 15px}.heroCard{padding:25px}.statGrid{grid-template-columns:1fr 1fr}}
+@media(max-width:850px){.hero{grid-template-columns:1fr}.admin{grid-template-columns:1fr}.container{padding:15px}.nav{padding:12px 15px}.heroCard{padding:25px}.statGrid{grid-template-columns:1fr 1fr}}
 </style>
 </head>
 <body>
@@ -34,9 +34,24 @@ footer{text-align:center;color:var(--muted);padding:50px 0 25px;font-size:12px}
 
 <section id="results" class="section"><div class="sectionHead"><div><h2>Ergebnisse</h2><div class="muted">Übersicht aller abgeschlossenen Matches</div></div></div><div class="panel" style="padding:10px;overflow:auto"><table class="table"><thead><tr><th>Match</th><th>Runde</th><th>Ergebnis</th><th>Sieger</th></tr></thead><tbody id="resultsBody"></tbody></table></div></section>
 
+<section id="admin" class="section"><div class="sectionHead"><div><h2>Admin</h2><div class="muted">Turnier verwalten – Änderungen werden lokal gespeichert.</div></div></div>
+<div class="admin">
+<div class="panel form"><h3>Teams & Teilnehmer verwalten</h3>
+<div class="notice">Du kannst alle 32 Startplätze selbst benennen und die zwei Spieler jedes Teams eintragen. Außerdem kannst du die Paarungen im Achtelfinale frei zusammenstellen.</div>
+<div id="teamAdmin"></div>
+<div class="formActions"><button class="btn primary" onclick="saveTeams()">Teams speichern</button></div>
+</div>
+<div class="panel form"><h3>Achtelfinale frei zuweisen</h3>
+<div class="notice">Wähle für jedes Match die beiden Teams. Die folgenden Runden werden automatisch aus den tatsächlichen Gewinnern aufgebaut – ausgeschiedene Teams tauchen nicht wieder auf.</div>
+<div id="pairingAdmin"></div>
+<div class="formActions"><button class="btn primary" onclick="savePairings()">Paarungen speichern</button></div>
+</div>
 
-
-
+<div class="panel form"><h3>Turnier-Einstellungen</h3><label>Turniername</label><input id="cfgTitle"><label>Untertitel</label><input id="cfgSubtitle"><div class="formActions"><button class="btn primary" onclick="saveConfig()">Speichern</button><button class="btn" onclick="resetTournament()">Turnier zurücksetzen</button></div><div class="notice">Die Website funktioniert komplett ohne Server. Daten werden im Browser per localStorage gespeichert.</div></div>
+<div class="panel form"><h3>Serien-Ergebnis eintragen</h3><div class="notice">Achtelfinale: Best of 3 · Viertelfinale: Best of 5 · Halbfinale & Finale: Best of 7</div><label>Match</label><select id="matchSelect"></select><div class="formGrid"><div><label>Team A Score</label><input id="scoreA" type="number" min="0" max="7" value="2"></div><div><label>Team B Score</label><input id="scoreB" type="number" min="0" max="7" value="1"></div></div><label>Status</label><select id="matchStatus"><option value="finished">Beendet</option><option value="live">LIVE</option><option value="pending">Ausstehend</option></select><div class="formActions"><button class="btn primary" onclick="saveMatch()">Ergebnis speichern</button></div></div>
+</div></section>
+</main><footer>Rocket League Tournament · Made for your event</footer>
+<script>
 const rounds=[{name:'Achtelfinale',count:16,bestOf:3},{name:'Viertelfinale',count:8,bestOf:5},{name:'Halbfinale',count:4,bestOf:7},{name:'Finale',count:2,bestOf:7}];
 let data=JSON.parse(localStorage.getItem('rlTournament')||'null');
 function makeData(){let teams=Array.from({length:32},(_,i)=>({id:i+1,name:`Team ${String(i+1).padStart(2,'0')}`,p1:`Spieler ${i*2+1}`,p2:`Spieler ${i*2+2}`}));let matches=[];let id=1;
@@ -133,7 +148,7 @@ save();renderAdmin();renderBracket();renderResults();alert('Serie gespeichert.')
 }
 function resetTournament(){if(confirm('Wirklich das komplette Turnier zurücksetzen?')){data=makeData();save();location.reload()}}
 function updateStats(){let played=data.matches.filter(m=>m.status==='finished'&&winner(m)).length;document.getElementById('played').textContent=played;document.getElementById('remaining').textContent=31-played}
-document.getElementById('nav').innerHTML=[['teams','Teilnehmer'],['bracket','Turnierplan'],['results','Ergebnisse'],].map(x=>`<button data-page="${x[0]}" onclick="show('${x[0]}')">${x[1]}</button>`).join('');
+document.getElementById('nav').innerHTML=[['teams','Teilnehmer'],['bracket','Turnierplan'],['results','Ergebnisse'],['admin','Admin']].map(x=>`<button data-page="${x[0]}" onclick="show('${x[0]}')">${x[1]}</button>`).join('');
 document.getElementById('title').textContent=data.title;document.getElementById('subtitle').textContent=data.subtitle;document.getElementById('teamCount').textContent=data.teams.length;document.getElementById('playerCount').textContent=data.teams.length*2;show('bracket');
 </script>
 </body></html>
