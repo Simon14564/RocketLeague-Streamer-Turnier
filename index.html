@@ -148,7 +148,7 @@ save();renderAdmin();renderBracket();renderResults();alert('Serie gespeichert.')
 }
 function resetTournament(){if(confirm('Wirklich das komplette Turnier zurücksetzen?')){data=makeData();save();location.reload()}}
 function updateStats(){let played=data.matches.filter(m=>m.status==='finished'&&winner(m)).length;document.getElementById('played').textContent=played;document.getElementById('remaining').textContent=31-played}
-document.getElementById('nav').innerHTML=[['teams','Teilnehmer'],['bracket','Turnierplan'],['results','Ergebnisse'],['admin','Admin']].map(x=>`<button data-page="${x[0]}" onclick="show('${x[0]}')">${x[1]}</button>`).join('');
+document.getElementById('nav').innerHTML=[['teams','Teilnehmer'],['bracket','Turnierplan'],['results','Ergebnisse'],].map(x=>`<button data-page="${x[0]}" onclick="show('${x[0]}')">${x[1]}</button>`).join('');
 document.getElementById('title').textContent=data.title;document.getElementById('subtitle').textContent=data.subtitle;document.getElementById('teamCount').textContent=data.teams.length;document.getElementById('playerCount').textContent=data.teams.length*2;show('bracket');
 </script>
 </body></html>
